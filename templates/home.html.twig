@@ -1,0 +1,80 @@
+{% extends "baseSite.html.twig" %}
+
+{% block pageContent %}
+
+<div id="banner" class="d-flex justify-content-center bg-white">
+    <img src="{{asset('build/images/reiki.png')}}" class="img-fluid" alt="Reiki kanji">
+</div>
+
+<div class="container bg-white">
+    <h2 class="text-center">Bienvenue sur mon site !</h2>
+
+    <div class="row mt-5">
+        <div class="col-6">
+            <div>
+                <h5>Mon nom est Esteban et je vous propose mes services pour :</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">vous <span class="text-dark font-weight-bold">aider</span> a
+                        reprendre votre vie en main, votre pouvoir créateur
+                    </li>
+                    <li class="list-group-item">vous <span class="text-dark font-weight-bold">guider</span> au mieux
+                        sur votre chemin de vie et retrouver
+                        l'harmonie, un
+                        alignement Corps, Âme et Esprit</li>
+                    <li class="list-group-item">vous <span class="text-dark font-weight-bold">conseiller</span> pour
+                        tout questionnement ou problématique en donnant
+                        des
+                        clefs pratiques et spirituelles</li>
+                    <li class="list-group-item">vous permettre de <span class="text-dark font-weight-bold">guérir</span>
+                        avec Amour, bienveillance et
+                        compréhension
+                    </li>
+                    <li class="list-group-item">vous apprendre à <span class="text-dark font-weight-bold">cerner</span>
+                        le plus possible vos réels besoins et
+                        envies
+                        du
+                        moment</li>
+                </ul>
+            </div>
+            <div class="mt-3">
+                <h5>Pour cela 2 types de rendez-vous sont disponibles :</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Une <span class="text-dark font-weight-bold">guidance</span> de 45
+                        minutes à 1 heure sur skype à l'aide de
+                        différents
+                        outils à ma dispositon (médiumnité, cartomancie, pendule, dossiers Akashiques)</li>
+                    <li class="list-group-item"><span class="text-dark font-weight-bold">Soin
+                            reiki/énergétique</span> à distance avec l'aide de vos guides</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-3 offset-3">
+            <img class="img-thumbnail" src="{{asset('build/images/IMG_2289_retouch.jpg')}}">
+        </div>
+    </div>
+
+    </br>
+    <hr class="dot-red">
+    </br>
+
+    <div class="row">
+        <div class="col-3">
+            <img class="img-thumbnail" src="{{asset('build/images/IMG_2298_retouch.jpg')}}">
+        </div>
+        <div class="col-6 offset-3 text-right">
+            <div>
+                <p class="font-italic">Que l'Amour guide vos pas</p>
+                <p class="font-italic">Que la lumière éclaire votre chemin</p>
+                <p class="font-italic">Que le discernement tranche le vrai du faux</p>
+                <p class="font-italic">Que la sagesse soit votre allié le plus fidèle</p>
+                <p class="font-italic">De nos différences retrouvons l'essence de nos ressemblances</p>
+            </div>
+            <div class="mt-5">
+                <p class="font-italic mt-3">Avec Gratitude et Amour, Merci</p>
+                <p class="font-italic">Esteban</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

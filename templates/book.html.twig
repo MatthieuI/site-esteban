@@ -1,0 +1,54 @@
+{% extends "baseSite.html.twig" %}
+
+{% block pageContent %}
+
+<div class="container bg-white pb-3">
+    {# <p class="text-dark bold mb-0">{{ today }}</p> #}
+    <div class="row py-3 text-center">
+        <div class="col-2">
+            {% if offset != 1 and offset != 0 %}<a class="btn btn-dark"
+                href="/reservation/suivant/{{offset-1}}">Précédent</a>{% endif %}
+            {% if offset == 1 %}<a class="btn btn-dark" href="/reservation/">Précédent</a>{% endif %}
+        </div>
+        <div class="col-2 offset-3">
+            <h5>{{month | upper}}<br>{{year}}</h5>
+        </div>
+        <div class="col-2 offset-3">
+            <a class="btn btn-dark" href="/reservation/suivant/{{offset+1}}">Suivant</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-10 offset-1">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Lundi</th>
+                        <th scope="col">Mardi</th>
+                        <th scope="col">Mercredi</th>
+                        <th scope="col">Jeudi</th>
+                        <th scope="col">Vendredi</th>
+                        <th scope="col">Samedi</th>
+                        <th scope="col">Dimanche</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for week in grid %}
+                    <tr>
+                        {% for day in week %}
+                        {% if day == null %}
+                        <td class="table-secondary">{{day}}</td>
+                        {% else %}
+                        <td>{{day}}</td>
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "baseBackOffice.html.twig" %}
+
+{% block pageContent %}
+<div class="container">
+    <h2 class="text-center my-5">Mes clients</h2>
+    
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Téléphone</th>
+            <th scope="col">Mail</th>
+            <th scope="col">Date de naissance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {# <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr> #}
+          {% for client in clients %}
+          <tr>
+              <td>{{ client.lastName }}</td>
+              <td>{{ client.firstName }}</td>
+              <td>{{ client.phone }}</td>
+              <td>{{ client.mail }}</td>
+              <td>{{ client.birthDate|date("m/d/Y") }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+{% endblock %}

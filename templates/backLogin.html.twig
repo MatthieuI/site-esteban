@@ -1,0 +1,27 @@
+{% extends "baseBackOffice.html.twig" %}
+
+{% form_theme adminForm 'bootstrap_4_layout.html.twig' %}
+
+{% block header %}
+{% endblock %}
+
+{% block pageContent %}
+<div class="container min-vh-100">
+    <div class="row min-vh-100">
+        <div class="col-6 my-auto mx-auto">
+            <div class="card">
+                <h5 class="card-header bg-primary text-white">Connexion</h5>
+                <div class="card-body">
+                    {{ form_start(adminForm) }}
+                    {{ form_row(adminForm.userName) }}
+                    {{ form_row(adminForm.password) }}
+                    <div class="text-right">
+                        {{ form_row(adminForm.save) }}
+                    </div>
+                    {{ form_end(adminForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

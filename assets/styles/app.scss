@@ -1,0 +1,16 @@
+/* body {
+    background-color: red;
+}
+
+h1 {
+    color: red;
+} */
+
+* {
+    font-family: 'Bodoni Mona' !important;
+}
+
+$light: #d4be83;
+$dark: #7d6f4b;
+
+@import '~bootstrap/scss/bootstrap';
