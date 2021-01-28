@@ -1,0 +1,7 @@
+{% extends "baseBackOffice.html.twig" %}
+
+{% form_theme articleForm '@FOSCKEditor/Form/ckeditor_widget.html.twig' %}
+
+{% block pageContent %}
+{{form(articleForm)}}
+{% endblock %}

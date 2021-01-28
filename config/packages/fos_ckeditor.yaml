@@ -1,0 +1,17 @@
+# Read the documentation: https://symfony.com/doc/current/bundles/FOSCKEditorBundle/index.html
+fos_ck_editor:
+    # ...
+    base_path: "build/ckeditor"
+    js_path:   "build/ckeditor/ckeditor.js"
+    input_sync: true
+    # configs:
+    #     my_config:
+    #         toolbar: full
+    # toolbars:
+    #     items:
+    #         full.colors: [ "TextColor", "BGColor" ]
+    #         full.document: [ "Source", "-", "Preview", "Print" ]
+    
+twig:
+    form_themes:
+        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'

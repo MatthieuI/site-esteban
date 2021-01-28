@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\AdminUser;
 use App\Form\AdminType;
+use App\Form\ArticleType;
 use App\Entity\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -95,5 +96,40 @@ class BackOfficeController extends AbstractController
         $clients = $repository->findAll();
 
         return $this->render('backClientList.html.twig', ['clients' => $clients]);
+    }
+
+    /**
+     * @Route("/back-office/articles", name="backArticleEditor")
+     */
+    public function displayArticleEditor(Request $request)
+    {
+        //verification de la présence d'une session --> retour au formulaire si pas de session
+        if (!$this->session->get('userName')) {
+            return $this->redirectToRoute('backLogin');
+        }
+
+        $form = $this->createForm(ArticleType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            //objet AdminUser contenant les infos entrées dans le formulaire
+            $articleInfo = $form->getData();
+            // $repository = $this->getDoctrine()->getRepository(AdminUser::class);
+            // $res = $repository->findBy(
+            //     ['userName' => $adminInfo->getUserName()]
+            // );
+            // if ($res) {
+            //     if ($res[0]->getPassword() === $adminInfo->getPassword()) {
+            //         $this->session->start();
+            //         $this->session->set('userName', $res[0]->getUserName());
+            //         return $this->redirectToRoute('backLandingPage');
+            //     }
+            // }
+            return $this->render('test.html.twig', [
+                'article' => $articleInfo['Article']
+            ]);
+        }
+
+        return $this->render('backArticleEditor.html.twig' , ['articleForm' => $form->createView()]);
     }
 }
