@@ -18,8 +18,8 @@ final class MailingHelper
             $mail->Encoding = 'base64';
             $mail->Host       = 'smtp.gmail.com';               // Set the SMTP server to send through
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'esteban.reiki.mail@gmail.com';
-            $mail->Password   = 'Toxic159+';                             // SMTP password
+            $mail->Username   = '**********@gmail.com';
+            $mail->Password   = '*********';                             // SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
             $mail->Port       = 465;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 
