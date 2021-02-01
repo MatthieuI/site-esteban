@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\MessageType;
+use App\Helper\MailingHelper;
 
 class BookingController extends AbstractController
 {
@@ -13,13 +14,23 @@ class BookingController extends AbstractController
     /**
      * @Route("/reservation", name="book")
      */
-    public function displayPage()
+    public function displayPage(Request $request)
     {
         setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
         $year = date('Y');
         $monthFr = (strftime("%B"));
         $grid = $this->createGrid(intval(date('Y')), intval(date('m')));
         $form = $this->createForm(MessageType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            //objet AdminUser contenant les infos entrées dans le formulaire
+            $messageInfo = $form->getData();
+            $sent = MailingHelper::sendMail($messageInfo['Nom'], $messageInfo['Adresse_mail'], $messageInfo['Sujet'], $messageInfo['Message']);
+            if($sent) {
+                return $this->render('validation.html.twig', ['validationMessage' => 'Le message a bien été envoyé.', 'contactForm' => $form->createView()]);
+            }
+            return $this->render('validation.html.twig', ['validationMessage' => 'Une erreur s\'est produite, veuillez réessayer.', 'contactForm' => $form->createView()]);
+        }
         return $this->render('book.html.twig', [
             'offset' => 0,
             'year' => $year,
@@ -80,7 +91,7 @@ class BookingController extends AbstractController
     /**
      * @Route("/reservation/suivant/{offset}", requirements={"offset"="\d+"})
      */
-    public function displayNextMonth($offset)
+    public function displayNextMonth($offset, Request $request)
     {
         setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
         $year = intval(date('Y'));
@@ -96,6 +107,16 @@ class BookingController extends AbstractController
         $monthFr = strftime("%B", mktime(0, 0, 0, $displayedMonth, 1, $year));
         $grid = $this->createGrid($year, $displayedMonth);
         $form = $this->createForm(MessageType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            //objet AdminUser contenant les infos entrées dans le formulaire
+            $messageInfo = $form->getData();
+            $sent = MailingHelper::sendMail($messageInfo['Nom'], $messageInfo['Adresse_mail'], $messageInfo['Sujet'], $messageInfo['Message']);
+            if($sent) {
+                return $this->render('validation.html.twig', ['validationMessage' => 'Le message a bien été envoyé.', 'contactForm' => $form->createView()]);
+            }
+            return $this->render('validation.html.twig', ['validationMessage' => 'Une erreur s\'est produite, veuillez réessayer.', 'contactForm' => $form->createView()]);
+        }
         return $this->render('book.html.twig', [
             'offset' => $offset,
             'year' => $year,
