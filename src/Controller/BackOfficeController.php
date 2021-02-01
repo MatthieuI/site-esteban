@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\AdminUser;
+use App\Entity\Article;
 use App\Form\AdminType;
 use App\Form\ArticleType;
 use App\Entity\Client;
@@ -108,24 +109,15 @@ class BackOfficeController extends AbstractController
             return $this->redirectToRoute('backLogin');
         }
 
-        $form = $this->createForm(ArticleType::class);
+        $article = new Article();
+        $form = $this->createForm(ArticleType::class, $article);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $articleInfo = $form->getData();
-            // $repository = $this->getDoctrine()->getRepository(AdminUser::class);
-            // $res = $repository->findBy(
-            //     ['userName' => $adminInfo->getUserName()]
-            // );
-            // if ($res) {
-            //     if ($res[0]->getPassword() === $adminInfo->getPassword()) {
-            //         $this->session->start();
-            //         $this->session->set('userName', $res[0]->getUserName());
-            //         return $this->redirectToRoute('backLandingPage');
-            //     }
-            // }
+            //$repository = $this->getDoctrine()->getRepository(Article::class);
             return $this->render('test.html.twig', [
-                'article' => $articleInfo['Article']
+                'article' => $articleInfo->getHtmlBody()
             ]);
         }
 

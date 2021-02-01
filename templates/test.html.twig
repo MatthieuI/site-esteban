@@ -1,7 +1,14 @@
-{% extends "baseSite.html.twig" %}
+{% extends "baseArticlePreview.html.twig" %}
 
 {% block pageContent %}
-<div class="container bg-white">
-    {{article|raw}}
+<div class="container-fluid bg-white">
+    <div class="container">
+        <h2 class="text-center">Prévisualisation de l'article :</h2>
+        {{article|raw}}
+        <div class="text-center pb-3">
+            <a href="{{ path(app.request.get('_route')) }}" class="btn btn-danger mr-3">Retour</a>
+            <a href="{{ path(app.request.get('_route')) }}" class="btn btn-success ml-3">Publier</a>
+        </div>
+    </div>
 </div>
 {% endblock %}
