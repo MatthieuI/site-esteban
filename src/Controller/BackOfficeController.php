@@ -112,7 +112,6 @@ class BackOfficeController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            //objet AdminUser contenant les infos entrées dans le formulaire
             $articleInfo = $form->getData();
             // $repository = $this->getDoctrine()->getRepository(AdminUser::class);
             // $res = $repository->findBy(

@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\MessageType;
 
 class BookingController extends AbstractController
 {
@@ -18,11 +19,13 @@ class BookingController extends AbstractController
         $year = date('Y');
         $monthFr = (strftime("%B"));
         $grid = $this->createGrid(intval(date('Y')), intval(date('m')));
+        $form = $this->createForm(MessageType::class);
         return $this->render('book.html.twig', [
             'offset' => 0,
             'year' => $year,
             'month' => $monthFr,
-            'grid' => $grid
+            'grid' => $grid,
+            'contactForm' => $form->createView()
         ]);
     }
 
@@ -92,11 +95,13 @@ class BookingController extends AbstractController
         }
         $monthFr = strftime("%B", mktime(0, 0, 0, $displayedMonth, 1, $year));
         $grid = $this->createGrid($year, $displayedMonth);
+        $form = $this->createForm(MessageType::class);
         return $this->render('book.html.twig', [
             'offset' => $offset,
             'year' => $year,
             'month' => $monthFr,
-            'grid' => $grid
+            'grid' => $grid,
+            'contactForm' => $form->createView()
         ]);
     }
 

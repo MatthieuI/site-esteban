@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\MessageType;
 
 class BlogController extends AbstractController {
 
@@ -12,7 +13,8 @@ class BlogController extends AbstractController {
      */
     public function displayPage()
     {
-        return $this->render('blog.html.twig');
+        $form = $this->createForm(MessageType::class);
+        return $this->render('blog.html.twig', ['contactForm' => $form->createView()]);
     }
     
     /**
@@ -20,7 +22,8 @@ class BlogController extends AbstractController {
      */
     public function displayArticle(int $id)
     {
-        return $this->render('article.html.twig');
+        $form = $this->createForm(MessageType::class);
+        return $this->render('article.html.twig', ['contactForm' => $form->createView()]);
     }
 
 }

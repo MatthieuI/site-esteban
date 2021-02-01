@@ -1,3 +1,5 @@
+{% form_theme contactForm 'bootstrap_4_layout.html.twig' %}
+
 <!DOCTYPE html>
 <html>
 
@@ -37,7 +39,24 @@
                 </li>
             </ul>
 
-            <button class="btn btn-dark">Me contacter</button>
+            <button class="btn btn-dark" data-toggle="modal" data-target="#contactForm">Me contacter</button>
+
+            <div class="modal fade" id="contactForm" tabindex="-1" aria-labelledby="contactFormLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-light">
+                            <h5 class="modal-title" id="contactFormLabel">Me contacter</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {{form(contactForm)}}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -46,7 +65,7 @@
     {% block pageContent %}
 
     {% endblock %}
-    
+
     {% block footer %}
 
     <div class="container-fluid bg-dark text-white d-flex flex-column text-center">
