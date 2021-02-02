@@ -3,14 +3,16 @@
 {% block pageContent %}
 <div class="container-fluid bg-white">
     <div class="container">
-        <h2 class="text-center py-3">Les Affirmations positives</h2>
+        <h2 class="text-center py-3">{{article.title}}</h2>
 
         <div class="text-center">
             <img src="{{asset('build/images/reiki.png')}}" style="max-width:30%;" class="img-fluid mb-3"
                 alt="Placeholder image">
         </div>
 
-        <p>Les affirmations positives sont des phrases que l'on se répète dans le but d'améliorer la perception de nous
+        {{article.htmlBody | raw}}
+
+        {# <p>Les affirmations positives sont des phrases que l'on se répète dans le but d'améliorer la perception de nous
             mêmes,
             des autres, d'un comportement, d'une situation de façon positive et réaliste.</p>
         <p>L'important est de mettre dans ces affirmations une intention, c'est à dire dans quel but je prends ce temps,
@@ -89,7 +91,7 @@
             l'instant présent, j'expérimente chaque moment comme agréable, sachant que mon avenir est lumineux, joyeux
             et protégé ; car je suis l'enfant aimé dont l'Univers prends soin avec amour maintenant et toujours. Et
             c'est ainsi."</p>
-        <p class="text-right font-italic">- Esteban</p>
+        <p class="text-right font-italic">- Esteban</p> #}
 
         <form action="" class="mt-5 pb-5">
             <div class="form-group">

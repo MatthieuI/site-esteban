@@ -16,7 +16,10 @@ class ArticleType extends AbstractType {
             ->add('title', TextType::class)
             ->add('htmlBody', CKEditorType::class)
             ->add('Preview', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-success text-right']
+                'attr' => ['class' => 'btn btn-success']
+            ])
+            ->add('Save', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-success']
             ])
         ;
     }

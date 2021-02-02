@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+use Symfony\Component\HttpFoundation\Response;
+
 class BackOfficeController extends AbstractController
 {
 
@@ -115,12 +117,19 @@ class BackOfficeController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $articleInfo = $form->getData();
-            //$repository = $this->getDoctrine()->getRepository(Article::class);
-            return $this->render('test.html.twig', [
-                'article' => $articleInfo->getHtmlBody()
-            ]);
+            if ($form->get('Preview')->isClicked()) {
+                return $this->render('test.html.twig', [
+                    'article' => $articleInfo->getHtmlBody()
+                ]);
+            }
+            if ($form->get('Save')->isClicked()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($article);
+                $entityManager->flush();
+                return new Response('Saved new article with id '.$article->getId());
+            }
         }
 
-        return $this->render('backArticleEditor.html.twig' , ['articleForm' => $form->createView()]);
+        return $this->render('backArticleEditor.html.twig', ['articleForm' => $form->createView()]);
     }
 }
