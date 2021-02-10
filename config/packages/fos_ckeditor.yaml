@@ -11,6 +11,9 @@ fos_ck_editor:
     #     items:
     #         full.colors: [ "TextColor", "BGColor" ]
     #         full.document: [ "Source", "-", "Preview", "Print" ]
+    configs:
+        my_config:
+            language: fr
     
 twig:
     form_themes:

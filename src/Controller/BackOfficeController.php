@@ -3,14 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\AdminUser;
+use App\Entity\Article;
 use App\Form\AdminType;
 use App\Form\ArticleType;
 use App\Entity\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Form\ChangePasswordType;
+use Symfony\Component\HttpFoundation\Response;
 
 class BackOfficeController extends AbstractController
 {
@@ -64,7 +66,7 @@ class BackOfficeController extends AbstractController
     /**
      * @Route("/back-office/accueil", name="backLandingPage")
      */
-    public function displayHome(Request $request)
+    public function displayHome()
     {
         //verification de la présence d'une session --> retour au formulaire si pas de session
         if (!$this->session->get('userName')) {
@@ -108,27 +110,62 @@ class BackOfficeController extends AbstractController
             return $this->redirectToRoute('backLogin');
         }
 
-        $form = $this->createForm(ArticleType::class);
+        $article = new Article();
+        $form = $this->createForm(ArticleType::class, $article);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $articleInfo = $form->getData();
-            // $repository = $this->getDoctrine()->getRepository(AdminUser::class);
-            // $res = $repository->findBy(
-            //     ['userName' => $adminInfo->getUserName()]
-            // );
-            // if ($res) {
-            //     if ($res[0]->getPassword() === $adminInfo->getPassword()) {
-            //         $this->session->start();
-            //         $this->session->set('userName', $res[0]->getUserName());
-            //         return $this->redirectToRoute('backLandingPage');
-            //     }
-            // }
-            return $this->render('test.html.twig', [
-                'article' => $articleInfo['Article']
-            ]);
+            if ($form->get('Preview')->isClicked()) {
+                $articleContent = $articleInfo->getHtmlBody();
+                $articleInfo->setHtmlBody(str_replace("watch?v=", "embed/", $articleContent));
+                return $this->render('test.html.twig', [
+                    'article' => $articleInfo->getHtmlBody()
+                ]);
+            }
+            if ($form->get('Save')->isClicked()) {
+                $articleContent = $article->getHtmlBody();
+                $article->setHtmlBody(str_replace("watch?v=", "embed/", $articleContent));
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($article);
+                $entityManager->flush();
+                return new Response('Saved new article with id ' . $article->getId());
+            }
         }
 
-        return $this->render('backArticleEditor.html.twig' , ['articleForm' => $form->createView()]);
+        return $this->render('backArticleEditor.html.twig', ['articleForm' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/back-office/parametres", name="backSettings")
+     */
+    public function displaySettings(Request $request)
+    {
+        //verification de la présence d'une session --> retour au formulaire si pas de session
+        if (!$this->session->get('userName')) {
+            return $this->redirectToRoute('backLogin');
+        }
+
+        $form = $this->createForm(ChangePasswordType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+            if ($formData['password'] === $formData['password2']) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $repository = $this->getDoctrine()->getRepository(AdminUser::class);
+                $res = $repository->findBy(
+                    ['userName' => $this->session->get('userName')]
+                );
+                $res[0]->setPassword($formData['password']);
+                $entityManager->flush();
+                return $this->redirectToRoute('backSettings');
+            }
+        }
+
+        return $this->render('backSettings.html.twig', [
+            'userName' => $this->session->get('userName'),
+            'passwordForm' => $form->createView()
+        ]);
     }
 }

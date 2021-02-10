@@ -14,11 +14,11 @@
     {% endblock %}
 </head>
 
-<body>
+<body class="bg-light">
     {% block header %}
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary text">
-        <a class="navbar-brand" href="{{ path('backLandingPage') }}">Back-office</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ path('home') }}">Esteban</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -26,24 +26,18 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('backArticleEditor') }}">Articles</a>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('home') }}">Accueil</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Commentaires</a>
+                    <a class="nav-link" href="{{ path('articlesList') }}">Articles</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Réservations</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('backClientList') }}">Clients</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('backSettings') }}">Paramètres</a>
+                    <a class="nav-link" href="{{ path('book') }}">Réservations</a>
                 </li>
             </ul>
 
-            <a class="btn btn-danger" href="{{ path('backLogout') }}">Déconnexion</a>
+            <button class="btn btn-dark">Me contacter</button>
         </div>
     </nav>
 
@@ -53,8 +47,23 @@
 
     {% endblock %}
 
+    {% block footer %}
+
+    <div class="container-fluid bg-dark text-white d-flex flex-column text-center">
+        <div class="d-flex flex-row text-center justify-content-center mb-2 mt-2">
+            <i class="fab fa-facebook-square fa-3x mr-4"></i>
+            <i class="fab fa-twitter-square fa-3x mr-4"></i>
+            <i class="fab fa-instagram-square fa-3x mr-4"></i>
+            <i class="fab fa-github-square fa-3x mr-4"></i>
+        </div>
+        <p>Mentions légales - Données personnelles</p>
+    </div>
+
+    {% endblock %}
+
     {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
+    <script src="https://kit.fontawesome.com/11979671c7.js" crossorigin="anonymous"></script>
     {% endblock %}
 </body>
 

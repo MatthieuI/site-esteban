@@ -3,5 +3,7 @@
 {% form_theme articleForm '@FOSCKEditor/Form/ckeditor_widget.html.twig' %}
 
 {% block pageContent %}
-{{form(articleForm)}}
+<div class="container my-5 py-5">
+    {{form(articleForm)}}
+</div>
 {% endblock %}

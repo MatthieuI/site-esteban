@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\MessageType;
@@ -15,6 +16,9 @@ class BlogController extends AbstractController {
      */
     public function displayPage(Request $request)
     {
+        $repository = $this->getDoctrine()->getRepository(Article::class);
+        $articles = $repository->findAll();
+
         $form = $this->createForm(MessageType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -26,7 +30,11 @@ class BlogController extends AbstractController {
             }
             return $this->render('validation.html.twig', ['validationMessage' => 'Une erreur s\'est produite, veuillez réessayer.', 'contactForm' => $form->createView()]);
         }
-        return $this->render('blog.html.twig', ['contactForm' => $form->createView()]);
+
+        return $this->render('blog.html.twig', [
+            'contactForm' => $form->createView(),
+            'articles' => $articles
+        ]);
     }
     
     /**
@@ -34,6 +42,9 @@ class BlogController extends AbstractController {
      */
     public function displayArticle(int $id, Request $request)
     {
+        $repository = $this->getDoctrine()->getRepository(Article::class);
+        $article = $repository->find($id);
+
         $form = $this->createForm(MessageType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -45,7 +56,11 @@ class BlogController extends AbstractController {
             }
             return $this->render('validation.html.twig', ['validationMessage' => 'Une erreur s\'est produite, veuillez réessayer.', 'contactForm' => $form->createView()]);
         }
-        return $this->render('article.html.twig', ['contactForm' => $form->createView()]);
+        
+        return $this->render('article.html.twig', [
+            'contactForm' => $form->createView(),
+            'article' => $article
+        ]);
     }
 
 }
