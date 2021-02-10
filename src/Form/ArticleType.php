@@ -13,13 +13,15 @@ class ArticleType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class)
-            ->add('htmlBody', CKEditorType::class)
+            ->add('title', TextType::class, ['label' => 'Titre'])
+            ->add('htmlBody', CKEditorType::class, ['label' => 'Corps'])
             ->add('Preview', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => ['class' => 'btn btn-success'],
+                'label' => 'Prévisualiser'
             ])
             ->add('Save', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => ['class' => 'btn btn-success'],
+                'label' => 'Publier'
             ])
         ;
     }

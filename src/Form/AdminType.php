@@ -15,10 +15,11 @@ class AdminType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('userName', TextType::class)
-            ->add('password', PasswordType::class)
+            ->add('userName', TextType::class, ['label' => 'Nom d\'utilisateur'])
+            ->add('password', PasswordType::class, ['label' => 'Mot de passe'])
             ->add('save', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => ['class' => 'btn btn-success'],
+                'label' => 'Se connecter'
             ])
         ;
     }
