@@ -37,6 +37,11 @@ class Appointment
      */
     private $client;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $confirmed;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Appointment
     public function setClient(?Client $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getConfirmed(): ?bool
+    {
+        return $this->confirmed;
+    }
+
+    public function setConfirmed(bool $confirmed): self
+    {
+        $this->confirmed = $confirmed;
 
         return $this;
     }
