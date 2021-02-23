@@ -1,0 +1,15 @@
+{% extends "baseSite.html.twig" %}
+
+{% form_theme bookingForm 'bootstrap_4_layout.html.twig' %}
+
+{% block pageContent %}
+
+<div class="bg-white container">
+    {% set day = app.request.attributes.get('_route_params')['day'] %}
+    {% set month = app.request.attributes.get('_route_params')['month'] %}
+    {% set year = app.request.attributes.get('_route_params')['year'] %}
+    <p>{{day}}/{{month}}/{{year}}</p>
+    {{form(bookingForm)}}
+</div>
+
+{% endblock %}

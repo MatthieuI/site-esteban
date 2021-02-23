@@ -40,4 +40,9 @@ final class MailingHelper
             return false;
         }
     }
+
+    // public static function handleForm($contactForm)
+    // {
+    //     # code...
+    // }
 }
