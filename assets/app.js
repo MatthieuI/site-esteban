@@ -16,3 +16,13 @@ import './styles/app.scss';
 require('bootstrap');
 import bsCustomFileInput from 'bs-custom-file-input';
 bsCustomFileInput.init();
+
+let iframes = document.getElementsByTagName('iframe');
+iframes.forEach(element => {
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = element.src.match(regExp);
+
+    if (match && match[2].length == 11) {
+        element.src = "//www.youtube.com/embed/" + match[2];
+    }
+});

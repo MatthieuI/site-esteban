@@ -96,6 +96,10 @@ class BookingController extends AbstractController
      */
     public function displayAppointmentForm(Request $request, int $year, int $month, int $day)
     {
+        if(date("d/m/y") >= "$day/$month/$year" || date("d/m/y") == "$day/$month/$year") {
+            return $this->redirectToRoute("book");
+        }
+
         $contactForm = $this->createForm(MessageType::class);
         $contactForm->handleRequest($request);
         if ($contactForm->isSubmitted() && $contactForm->isValid()) {
@@ -156,7 +160,13 @@ class BookingController extends AbstractController
             $em->persist($appointment);
             $em->flush();
 
-            return new Response('Saved new client with id '.$client->getId().'<br>Saved new appoitment with id '.$appointment->getId());
+            $messageEsteban = $client->getLastName() . " " . $client->getFirstName() . " a pris rendez-vous pour un(e) " . $appointment->getType()->getType() . " le " . date_format($appointment->getDate(), "d/m/Y") . " à " . date_format($appointment->getTime(), "H:i");
+            $sent = MailingHelper::sendMailAppointment($messageEsteban);
+            if($sent) {
+                return new Response("ok");
+            } else {
+                return new Response("nope");
+            }
         }
 
         return $this->render('bookingForm.html.twig', [

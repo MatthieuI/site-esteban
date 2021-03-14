@@ -6,7 +6,11 @@
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
     {% block stylesheets %}
-
+    {#<style>
+        .cke_1 {
+            display: none;
+        }
+    </style>#}
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda&display=swap" rel="stylesheet">
     {{ encore_entry_link_tags('app') }}
@@ -64,6 +68,12 @@
     {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
     <script src="https://kit.fontawesome.com/11979671c7.js" crossorigin="anonymous"></script>
+    <script>
+        let textEditor = document.getElementById("cke_article_preview_htmlBody");
+        let test = document.getElementsByClassName("cke_1");
+        console.log(textEditor);
+        console.log(test.length);
+    </script>
     {% endblock %}
 </body>
 

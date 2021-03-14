@@ -27,6 +27,11 @@ class Article
      */
     private $htmlBody;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $abstract;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +57,18 @@ class Article
     public function setHtmlBody(string $htmlBody): self
     {
         $this->htmlBody = $htmlBody;
+
+        return $this;
+    }
+
+    public function getAbstract(): ?string
+    {
+        return $this->abstract;
+    }
+
+    public function setAbstract(?string $abstract): self
+    {
+        $this->abstract = $abstract;
 
         return $this;
     }
