@@ -3,15 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\AdminUser;
+use App\Entity\Appointment;
 use App\Entity\Article;
 use App\Form\AdminType;
 use App\Form\ArticleType;
+use App\Form\ArticleModifierType;
 use App\Entity\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Form\ChangePasswordType;
+use App\Form\ArticlePreviewType;
 use Symfony\Component\HttpFoundation\Response;
 
 class BackOfficeController extends AbstractController
@@ -101,7 +104,7 @@ class BackOfficeController extends AbstractController
     }
 
     /**
-     * @Route("/back-office/articles", name="backArticleEditor")
+     * @Route("/back-office/articles/new", name="backArticleEditor")
      */
     public function displayArticleEditor(Request $request)
     {
@@ -118,14 +121,20 @@ class BackOfficeController extends AbstractController
             $articleInfo = $form->getData();
             if ($form->get('Preview')->isClicked()) {
                 $articleContent = $articleInfo->getHtmlBody();
-                $articleInfo->setHtmlBody(str_replace("watch?v=", "embed/", $articleContent));
+                $article->setHtmlBody(str_replace("playlist", "embed/videoseries", $articleContent));
+                $previewForm = $this->createForm(ArticlePreviewType::class, $article, [
+                    'title' => $article->getTitle(),
+                    'body' => $article->getHtmlBody(),
+                    'abstract' => $article->getAbstract()
+                ]);
                 return $this->render('test.html.twig', [
-                    'article' => $articleInfo->getHtmlBody()
+                    'article' => $articleInfo->getHtmlBody(),
+                    //'previewForm' => $previewForm->createView()
                 ]);
             }
             if ($form->get('Save')->isClicked()) {
                 $articleContent = $article->getHtmlBody();
-                $article->setHtmlBody(str_replace("watch?v=", "embed/", $articleContent));
+                $article->setHtmlBody(str_replace("playlist", "embed/videoseries", $articleContent));
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($article);
                 $entityManager->flush();
@@ -135,6 +144,116 @@ class BackOfficeController extends AbstractController
 
         return $this->render('backArticleEditor.html.twig', ['articleForm' => $form->createView()]);
     }
+
+    /**
+     * @Route("/back-office/articles", name="backArticleList")
+     */
+    public function displayBackArticleList(Request $request)
+    {
+        //verification de la présence d'une session --> retour au formulaire si pas de session
+        if (!$this->session->get('userName')) {
+            return $this->redirectToRoute('backLogin');
+        }
+
+        $repository = $this->getDoctrine()->getRepository(Article::class);
+        $articles = $repository->findAll();
+
+        return $this->render('backArticleList.html.twig', ['articles' => $articles]);
+    }
+
+    /**
+     * @Route("/back-office/articles/modify/{id}", name="backArticleModifier", requirements={"id"="\d+"})
+     */
+    public function displayBackArticleModifier(int $id, Request $request)
+    {
+        //verification de la présence d'une session --> retour au formulaire si pas de session
+        if (!$this->session->get('userName')) {
+            return $this->redirectToRoute('backLogin');
+        }
+
+        $repository = $this->getDoctrine()->getRepository(Article::class);
+        $article = $repository->find($id);
+        $form = $this->createForm(ArticleModifierType::class, $article, [
+            'title' => $article->getTitle(),
+            'body' => $article->getHtmlBody(),
+            'abstract' => $article->getAbstract()
+        ]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $articleInfo = $form->getData();
+            if ($form->get('Preview')->isClicked()) {
+                $articleContent = $articleInfo->getHtmlBody();
+                $article->setHtmlBody(str_replace("playlist", "embed/videoseries", $articleContent));
+                $previewForm = $this->createForm(ArticlePreviewType::class, $article, [
+                    'title' => $article->getTitle(),
+                    'body' => $article->getHtmlBody(),
+                    'abstract' => $article->getAbstract()
+                ]);
+                return $this->render('test.html.twig', [
+                    'article' => $articleInfo->getHtmlBody(),
+                    //'previewForm' => $previewForm->createView()
+                ]);
+            }
+            if ($form->get('Save')->isClicked()) {
+                $articleContent = $article->getHtmlBody();
+                $article->setHtmlBody(str_replace("playlist", "embed/videoseries", $articleContent));
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->flush();
+                return new Response('Updated article with id ' . $article->getId());
+            }
+        }
+
+        return $this->render('backArticleModifier.html.twig', ['articleForm' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/back-office/articles/delete", name="deleteArticle", methods="post")
+     */
+    public function deleteArticle(Request $request)
+    {
+        $articles = $request->request->get('delete');
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository = $this->getDoctrine()->getRepository(Article::class);
+        $message = '<p>Deleted articles with ids :</p><ul>';
+        foreach ($articles as $article) {
+            $item = $repository->find(intval($article));
+            $entityManager->remove($item);
+            $entityManager->flush();
+            $message .= "<li>$article</li>";
+        }
+        $message .= "</ul>";
+        return $this->redirectToRoute('backArticleList');
+    }
+
+    // /**
+    //  * @Route("/back-office/articles/preview", name="previewArticle")
+    //  */
+    // //, methods="post"
+    // public function previewArticle(Request $request)
+    // {
+    //     // $articles = $request->request->get('delete');
+    //     // $entityManager = $this->getDoctrine()->getManager();
+    //     // $repository = $this->getDoctrine()->getRepository(Article::class);
+    //     // $message = '<p>Deleted articles with ids :</p><ul>';
+    //     // foreach ($articles as $article) {
+    //     //     $item = $repository->find(intval($article));
+    //     //     $entityManager->remove($item);
+    //     //     $entityManager->flush();
+    //     //     $message .= "<li>$article</li>";
+    //     // }
+    //     // $message .= "</ul>";
+    //     // return $this->redirectToRoute('backArticleList');
+    //     $previewForm = $this->createForm(ArticlePreviewType::class/*, $article, [
+    //         'title' => $article->getTitle(),
+    //         'body' => $article->getHtmlBody(),
+    //         'abstract' => $article->getAbstract()
+    //     ]*/);
+    //     return $this->render('test.html.twig', [
+    //         'article' => $request->request->get('htmlBody'),
+    //         'previewForm' => $previewForm->createView()
+    //     ]);
+    // }
 
     /**
      * @Route("/back-office/parametres", name="backSettings")
@@ -166,6 +285,20 @@ class BackOfficeController extends AbstractController
         return $this->render('backSettings.html.twig', [
             'userName' => $this->session->get('userName'),
             'passwordForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/back-office/reservations", name="backAppointments")
+     */
+    public function displayAppointmentManagement()
+    {
+        $repository = $this->getDoctrine()->getRepository(Appointment::class);
+        $unconfirmed = $repository->findBy(
+            ['confirmed' => 0]
+        );
+        return $this->render('backAppointments.html.twig', [
+            'unconfirmed' => $unconfirmed
         ]);
     }
 }

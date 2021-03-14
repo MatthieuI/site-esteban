@@ -41,6 +41,39 @@ final class MailingHelper
         }
     }
 
+    public static function sendMailAppointment($body)
+    {
+        $mail = new PHPMailer(true);
+
+        try {
+            $mail->isSMTP();     
+            $mail->CharSet = 'UTF-8';
+            $mail->Encoding = 'base64';
+            $mail->Host       = 'smtp.gmail.com';               // Set the SMTP server to send through
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'esteban.reiki.mail@gmail.com';
+            $mail->Password   = 'Toxic159+';                             // SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+            $mail->Port       = 465;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+
+            //Recipients
+            $mail->setFrom("esteban.reiki.mail@gmail.com", "Admin");
+            $mail->addAddress('matthieuidjellidaine@gmail.com', 'Joe User');
+            $mail->addReplyTo("esteban.reiki.mail@gmail.com", "Admin");
+
+            // Content
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = "Nouveau rendez-vous";
+            $mail->Body    = '<p>'.$body.'</p>';
+            //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
     // public static function handleForm($contactForm)
     // {
     //     # code...

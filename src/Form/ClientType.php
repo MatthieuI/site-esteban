@@ -69,9 +69,4 @@ class ClientType extends AbstractType
             'available_times' => null
         ]);
     }
-
-    private function test($appointmentTypeId)
-    {
-        
-    }
 }
